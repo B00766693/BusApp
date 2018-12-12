@@ -51,11 +51,11 @@ public class MyUI extends UI {
         Label logo = new Label("<H1>Fun Bus Bookings</H1> <p/> <h3>Please enter the details below and click Book</h3>", ContentMode.HTML);
         layout.addComponent(logo);
 
+
         try {
         // Connect with JDBC driver to a database
         connection = DriverManager.getConnection(connectionString);
         ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM BusTable"); //Is name of table that was created in step 4
-        
         List<Bus> buses = new ArrayList<Bus>();//create a list of bus objects.  call the list buses
         
         while(rs.next()){ 
@@ -84,7 +84,7 @@ public class MyUI extends UI {
     
         //Slider
         Slider s = new Slider("People", 20, 150);
-        s.setValue(1.0);
+        s.setValue(20.0);
         s.setWidth("500px");
         s.setCaption("How many people are invited to this party");
 
@@ -96,6 +96,8 @@ public class MyUI extends UI {
         ComboBox<String> accesibilityRequired = new ComboBox<String>("Accessibility");
         accesibilityRequired.setItems("yes", "no"); 
     
+        hLayout.addComponents(groupName,s, accesibilityRequired);
+
         Label infoLabel = new Label("Your group is not yet booked", ContentMode.HTML);
 
         //Book Button
@@ -139,15 +141,16 @@ public class MyUI extends UI {
             return;
         }//if accessibility not specified
 
+       
         else{
             infoLabel.setValue("<h3>Success! The group is  booked now<h3>");
                 return;
             }//else
-
         });//button
+        
 
 
-        hLayout.addComponents(groupName,s, accesibilityRequired);
+        
 
         layout.addComponents(hLayout, button, infoLabel ,myGrid);
 
