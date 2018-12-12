@@ -2,6 +2,8 @@ package aisling.com;
 
 import javax.servlet.annotation.WebServlet;
 
+import java.sql.*;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -24,8 +26,32 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        Connection connection = null;
+        String connectionString = "jdbc:sqlserver://tuesserver.database.windows.net:1433;" + 
+        "database=BusDatabase;" + 
+        "user=aislingstudent@tuesserver;" + 
+        "password=Server123;" + 
+        "encrypt=true;" + 
+        "trustServerCertificate=false;" + 
+        "hostNameInCertificate=*.database.windows.net;" +
+        "loginTimeout=30;";
+        //to do a connection on the app
+
         final VerticalLayout layout = new VerticalLayout();
         
+        try {
+        // Connect with JDBC driver to a database
+        connection = DriverManager.getConnection(connectionString);
+        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM BusTable"); //Is name of table that was created in step 4
+        layout.addComponent(new Label("Connected to database: " + connection.getCatalog()));
+        }//try
+
+        catch(Exception e)
+        {
+            // Not success!
+            System.out.println(e.getMessage());
+        }//catch
+
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
 
